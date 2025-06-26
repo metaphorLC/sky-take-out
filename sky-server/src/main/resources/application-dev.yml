@@ -1,0 +1,30 @@
+sky:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    host: ${MYSQL_HOST}
+    port: ${MYSQL_PORT}
+    database: ${MYSQL_DB}
+    username: ${MYSQL_USERNAME}
+    password: ${MYSQL_PASSWORD}
+
+  alioss:
+    endpoint: ${ALI_OSS_ENDPOINT}
+    access-key-id: ${ALI_OSS_ACCESS_KEY_ID}
+    access-key-secret: ${ALI_OSS_ACCESS_KEY_SECRET}
+    bucket-name: ${ALI_OSS_BUCKET}
+
+  redis:
+    host: ${REDIS_HOST}
+    port: ${REDIS_PORT}
+    database: ${REDIS_DB}
+
+  wechat:
+    appid: ${WX_APPID}
+    secret: ${WX_SECRET}
+    mchid: ${WX_MCHID}
+    mchSerialNo: ${WX_MCH_SERIAL_NO}
+    privateKeyFilePath: ${WX_PRIVATE_KEY_PATH}
+    apiV3Key: ${WX_API_V3_KEY}
+    weChatPayCertFilePath: ${WX_CERT_PATH}
+    notifyUrl: ${WX_NOTIFY_URL}
+    refundNotifyUrl: ${WX_REFUND_NOTIFY_URL}21
