@@ -4,6 +4,8 @@ import com.sky.entity.User;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
+import java.util.Map;
+
 /**
  * @program: sky-take-out
  * @interfaceName: UserMapper
@@ -30,4 +32,18 @@ public interface UserMapper {
 
     @Select("select * from user where id = #{userId}")
     User getById(Long userId);
+
+    /**
+     * 查询当日新增用户数据
+     * @param map
+     * @return
+     */
+    Integer sumNewUserByMap(Map map);
+
+    /**
+     * 查询当日用户总量
+     * @param map
+     * @return
+     */
+    Integer sumTotalUserByMap(Map map);
 }
