@@ -140,14 +140,21 @@ public class ReportServiceImpl implements ReportService {
             LocalDateTime beginTime = LocalDateTime.of(localDate, LocalTime.MIN);
             LocalDateTime endTime = LocalDateTime.of(localDate, LocalTime.MAX);
 
-            Map map = new HashMap<>();
+            // 抽取一个方法
+            Integer orderCount = getOrderCount(beginTime,endTime,null);
+            Integer validOrderCount = getOrderCount(beginTime,endTime,Orders.COMPLETED);
+            orderCountList.add(orderCount);
+            validOrderCountList.add(validOrderCount);
+
+            // 抽取一个方法
+            /*Map map = new HashMap<>();
             map.put("end", endTime);
             map.put("begin", beginTime);
             Integer orderCount = orderMapper.countByMap(map);
             orderCountList.add(orderCount);
             map.put("status", Orders.COMPLETED);
             Integer validOrderCount = orderMapper.countByMap(map);
-            validOrderCountList.add(validOrderCount);
+            validOrderCountList.add(validOrderCount);*/
         }
 
         /**
@@ -159,7 +166,7 @@ public class ReportServiceImpl implements ReportService {
          * private Double orderCompletionRate;
          */
         // 获取当前时间
-        LocalDateTime now = LocalDateTime.now();
+        /*LocalDateTime now = LocalDateTime.now();
         Map map = new HashMap<>();
         map.put("now", now);
         // 获取订单总数
@@ -172,7 +179,19 @@ public class ReportServiceImpl implements ReportService {
         // 非0校验
         if (validOrderCount > 0 && totalOrderCount > 0) {
             orderCompletionRate = (double) validOrderCount / totalOrderCount;
+        }*/
+
+        // 获取订单总数
+        Integer totalOrderCount = orderCountList.stream().reduce(Integer::sum).get();
+        // 计算时间内的有效订单数量
+        Integer validOrderCount = validOrderCountList.stream().reduce(Integer::sum).get();
+        // 计算订单完成率
+        Double orderCompletionRate = 0.0;
+        if (totalOrderCount != 0) {
+            orderCompletionRate =  validOrderCount.doubleValue() / totalOrderCount;
         }
+
+
 
         return OrderReportVO.builder().dateList(StringUtils.join(dateList, ","))
                 .orderCountList(StringUtils.join(orderCountList, ","))
@@ -181,5 +200,13 @@ public class ReportServiceImpl implements ReportService {
                 .validOrderCount(validOrderCount)
                 .orderCompletionRate(orderCompletionRate)
                 .build();
+    }
+
+    private Integer getOrderCount(LocalDateTime beginTime, LocalDateTime endTime, Integer status) {
+        Map map = new HashMap<>();
+        map.put("begin", beginTime);
+        map.put("end", endTime);
+        map.put("status", status);
+        return orderMapper.countByMap(map);
     }
 }
